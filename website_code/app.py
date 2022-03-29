@@ -13,8 +13,6 @@ st.header('Completează formularul și vezi viitoarea ta notă')
 d[col[0]] = st.selectbox('Sex',options=[" ","masculin","feminin"])
 d[col[1]] = st.selectbox('Treapta de învățământ', options=[" ", "Liceu", "Gimnaziu"])
 d[col[2]] = st.selectbox('Profil', options=[" ", "Real", "Uman", "Nu am încă profil"])
-if d[col[2]] == "Nu am încă profil":
-    d[col[2]] = 'Uman'
 d[col[3]] = st.selectbox('Clasa', options=[" ",5,6,7,8,9,10,11,12])
 d[col[4]] = st.number_input('Vârsta ta',step=1,min_value=9,max_value=19)
 d[col[5]] = st.selectbox('Timpul petrecut cu prietenii (1-foarte putin, 5-foarte mult)', options=[" ",1,2,3,4,5])
@@ -40,7 +38,6 @@ d[col[18]] = st.selectbox('Consideri să-ți continui studiile la universitate?'
 d[col[19]] = st.selectbox('Consumul de alcool (1-deloc, 5-mult)', options=[" ",1,2,3,4,5])
 d[col[20]] = d[col[19]]
 d[col[21]] = st.selectbox('Statutul părinților', options=[" ",'Trăiesc împreună','Trăiesc separat'])
-d[col[21]] = "Trăiesc împreună"
 d[col[22]] = st.selectbox('Ai acces la internet acasă?', options=[" ",'Nu','Da'])
 d[col[23]] = st.selectbox('Ești într-o relație romantică momentan?', options=[" ",'Nu','Da'])
 
