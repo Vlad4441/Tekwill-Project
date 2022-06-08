@@ -2,8 +2,11 @@ import pandas as pd
 import numpy as np
 from sklearn import preprocessing
 from sklearn.preprocessing import MinMaxScaler
+from lime import lime_tabular
+count = 0
 
 def read_file2():
+    global model12
     data=pd.read_csv('Dataframe_original')
     data = data.drop(['Unnamed: 0'],axis=1)
     data=data.drop(['Grade'], axis=1)
@@ -22,6 +25,7 @@ def read_file2():
     return df
 
 def process2(d):
+    global count, explainer, ar, df_dummies
     df = read_file2()
     #adauga la dataframe inputul de la user
     for i in d.keys():
@@ -37,7 +41,7 @@ def process2(d):
         df[i] = le.fit_transform(df[i])
 
     df_dummies=pd.get_dummies(df)
-
+    df_num = df_dummies
     scaler = MinMaxScaler()
     df_dummies = scaler.fit_transform(df_dummies)
     df_dummies = pd.DataFrame(df_dummies)
@@ -52,10 +56,18 @@ def process2(d):
                     columns[j] = False
     selected_columns = df_dummies.columns[columns]
     df_dummies = df_dummies[selected_columns]
+    # print(df_dummies)
 
     # creeaza din Dataframe array bidimensional
     ar = []
     for j in df_dummies.columns:
         ar.append(int(df_dummies.at[170, j]))
-    #new_df_dummies.to_csv('df.csv',index=False)
+    xt = df_dummies.to_numpy()
+    if count == 0:
+        count = 1
+        explainer = lime_tabular.LimeTabularExplainer(xt, mode="regression", feature_names=df_num.columns)
     return [ar]
+
+def explain(model):
+    explanation = explainer.explain_instance(np.array(ar), model.predict, num_features=len(df_dummies.columns))
+    explanation.save_to_file("classif_explanation.html")
